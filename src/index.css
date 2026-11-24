@@ -1,0 +1,247 @@
+@import "tailwindcss";
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  :root {
+    --font-display: 'Bricolage Grotesque', 'Noto Sans Devanagari', 'Noto Sans Tamil', 'Noto Sans Bengali', system-ui, sans-serif;
+    --font-sans: 'Plus Jakarta Sans', 'Noto Sans Devanagari', 'Noto Sans Tamil', 'Noto Sans Bengali', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+    box-sizing: border-box;
+    overscroll-behavior: none;
+    font-family: var(--font-sans);
+    background-color: #0a0b0e;
+    color: #f8f9fa;
+  }
+
+  #root {
+    width: 100%;
+    max-width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+  }
+}
+
+@layer components {
+  /* Always-on-top fixed broadcast header above full-screen 100dvh video */
+  .top-broadcast-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+    z-index: 9999;
+    padding: max(10px, env(safe-area-inset-top)) 12px 10px;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.88) 0%,
+      rgba(0, 0, 0, 0.4) 68%,
+      transparent 100%
+    );
+  }
+
+  /* Always-visible fixed mobile bottom navigation bar */
+  .bottom-broadcast-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+    z-index: 9999;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Smooth 9:16 vertical snap-scroll physics */
+  .reel-snap-container {
+    width: 100%;
+    max-width: 100%;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    scrollbar-width: none;
+  }
+
+  .reel-snap-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .reel-snap-item,
+  .reel-card {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    min-height: 100%;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: #060913;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  @media (max-width: 1023px) {
+    .reel-snap-item,
+    .reel-card {
+      height: 100dvh;
+      min-height: 100dvh;
+    }
+  }
+
+  .reel-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+}
+
+/* Slow cinema Ken Burns animation for fallback imagery */
+@keyframes kenBurnsReel {
+  0% {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: scale(1.07) translate3d(-1.2%, -1.5%, 0);
+  }
+  100% {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+}
+
+.animate-ken-burns {
+  animation: kenBurnsReel 24s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Hardware-accelerated video decoding layer */
+.gpu-video {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Scrolling Breaking News Ticker */
+@keyframes newsTicker {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-news-ticker {
+  display: flex;
+  width: max-content;
+  animation: newsTicker 24s linear infinite;
+  will-change: transform;
+}
+
+/* Live Audio Equalizer Waveform Bars */
+@keyframes eqPulse {
+  0%, 100% {
+    transform: scaleY(0.28);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.animate-eq-bar {
+  transform-origin: bottom;
+  animation: eqPulse 0.65s ease-in-out infinite;
+}
+
+/* Double-tap Heart Burst Animation */
+@keyframes heartBurst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4) rotate(-8deg);
+  }
+  25% {
+    opacity: 1;
+    transform: translate(-50%, -60%) scale(1.25) rotate(6deg);
+  }
+  70% {
+    opacity: 0.95;
+    transform: translate(-50%, -85%) scale(1.05) rotate(-3deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -125%) scale(1.35) rotate(0deg);
+  }
+}
+
+.animate-heart-burst {
+  animation: heartBurst 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* AI Anchor subtle speaking mouth pulse */
+@keyframes anchorMouth {
+  0%, 100% {
+    transform: scaleY(0.45);
+  }
+  50% {
+    transform: scaleY(1.25);
+  }
+}
+
+.animate-anchor-mouth {
+  transform-origin: center;
+  animation: anchorMouth 0.28s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ken-burns,
+  .animate-news-ticker,
+  .animate-eq-bar,
+  .animate-anchor-mouth {
+    animation: none;
+  }
+  .reel-snap-container {
+    scroll-behavior: auto;
+  }
+}
+
+/* Custom subtle scrollbar for desktop side panels */
+.newsroom-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.newsroom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.newsroom-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

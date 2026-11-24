@@ -1,0 +1,63 @@
+{
+  "rules": {
+    "live_news": {
+      ".read": true,
+      "$district": {
+        "$newsId": {
+          ".write": "newData.exists() && newData.hasChildren(['title', 'district', 'script']) && newData.child('district').val() === $district"
+        }
+      }
+    },
+    "pending_news": {
+      ".read": true,
+      "$newsId": {
+        ".write": "!data.exists() || !newData.exists()",
+        ".validate": "!newData.exists() || (newData.hasChildren(['title', 'district', 'script', 'reporterName']) && newData.child('title').isString() && newData.child('title').val().length >= 5 && newData.child('script').isString() && newData.child('script').val().length >= 15)"
+      }
+    },
+    "reporters": {
+      ".read": true,
+      "$reporterId": {
+        ".write": "!data.exists() || newData.exists()",
+        ".validate": "newData.hasChildren(['name', 'name3', 'birthYear', 'district']) && newData.child('name3').isString() && newData.child('name3').val().length === 3 && newData.child('birthYear').isString() && newData.child('birthYear').val().length === 4"
+      }
+    },
+    "live_tv_channels": {
+      ".read": true,
+      "$channelId": {
+        ".write": "!newData.exists() || (newData.hasChildren(['name', 'category', 'streamUrl']) && newData.child('name').isString() && newData.child('streamUrl').isString())"
+      }
+    },
+    "district_tv_channels": {
+      ".read": true,
+      "$district": {
+        "$channelId": {
+          ".write": "!newData.exists() || (newData.hasChildren(['name', 'district', 'streamUrl']) && newData.child('district').val() === $district && newData.child('name').isString() && newData.child('streamUrl').isString())"
+        }
+      }
+    },
+    "pending_tv_channels": {
+      ".read": true,
+      "$channelId": {
+        ".write": "!data.exists() || !newData.exists()",
+        ".validate": "!newData.exists() || (newData.hasChildren(['name', 'district', 'streamUrl', 'reporterName']) && newData.child('name').isString() && newData.child('streamUrl').isString())"
+      }
+    },
+    "local_ads": {
+      ".read": true,
+      "$district": {
+        "$adId": {
+          ".write": "!newData.exists() || (newData.hasChildren(['businessName', 'district', 'format']) && newData.child('district').val() === $district)"
+        }
+      }
+    },
+    "ad_network_config": {
+      ".read": true,
+      ".write": "newData.exists()"
+    },
+    "$other": {
+      ".read": false,
+      ".write": false
+    }
+  }
+}

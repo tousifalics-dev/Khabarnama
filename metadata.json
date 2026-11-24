@@ -1,0 +1,6 @@
+{
+  "name": "DESH-REEL: Hyper-Local AI News",
+  "description": "Mobile-first hyper-local vertical news reels in six Indian languages with live subtitle sync, Web Speech narration, district exploration, and citizen reporting.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
